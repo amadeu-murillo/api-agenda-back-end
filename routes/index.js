@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 
 const AgendaModel = require('../agenda');
+
+const auth = require("../helpers/auth");
 /* GET home page. */
 router.get('/', function(req, res) {
   let list = AgendaModel.list();
@@ -25,7 +27,7 @@ router.get('/:id',(req,res)=>{
 
 //inserir novos registros
 
-router.post('/',(req,res)=>{
+router.post('/',auth.validaAcesso, (req,res)=>{
   let{nome,tipo,contato}= req.body;
   if(nome && tipo && contato){
     let obj = AgendaModel.save(nome,tipo,contato)
